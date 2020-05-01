@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Onrello</title>
+    <link rel="stylesheet" href="https://unpkg.com/onsenui/css/onsenui.css" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/onsenui/css/onsen-css-components.min.css"
+    />
+    <link rel="stylesheet" href="des.css" />
+    <script src="scripts.js"></script>
+    <script src="https://unpkg.com/onsenui/js/onsenui.min.js"></script>
+    <script src="https://unpkg.com/jquery/dist/jquery.min.js"></script>
+  </head>
+
+  <body>
+    <ons-navigator
+      swipeable="force"
+      id="myNav"
+      page="page1.html"
+    ></ons-navigator>
+    <template id="page1.html">
+      <ons-page id="page1">
+        <ons-toolbar>
+          <div class="center">Onrello</div>
+        </ons-toolbar>
+
+        <div class="topBar">
+          <ons-input
+            id="tabName"
+            class="topBarItem tabName"
+            type="text"
+            placeholder="tableName"
+            onchange="chng()"
+          ></ons-input>
+          <div class="topBarItem">Export</div>
+          <div class="topBarItem">Settings</div>
+        </div>
+        <div id="colData"></div>
+
+        <div class="addStuff" onclick="createColumnDialog()">+ Add column</div>
+        <ons-button onclick="removeAll()">REMOVE</ons-button>
+      </ons-page>
+    </template>
+
+    <ons-dialog id="colDialog">
+      <ons-input id="colName" placeholder="Column name..."></ons-input>
+      <p>
+        <ons-button onclick="createColumn()">ADD</ons-button>
+
+        <ons-button onclick="hideDialog('colDialog')">Close</ons-button>
+      </p>
+    </ons-dialog>
+    <ons-dialog id="taskDialog"> 
+        <div style="text-align: center; padding: 10px; ">
+
+            <p>
+                <ons-input id="taskName" modifier="underbar" placeholder="Task Name" float></ons-input>
+            </p>
+            <p>
+                <input style="font-size:200%" id="taskDate" type="date" modifier="underbar material"></input>
+            </p>
+            <p>
+                <textarea class="textarea" rows="3" placeholder="Notes" id="taskText"></textarea>
+            </p>
+            <p>
+              <ons-list>
+                    <ons-list-header> Notifications</ons-list-header>
+
+                        <div class="center">
+                            ON/OFF
+                        </div>
+                        <div class="right">
+                            <ons-switch checked id="notifON"></ons-switch>
+                        </div>
+                    </ons-list>
+
+
+            </p>
+            <p>
+                <ons-button modifier="material" id="push-button4">Add Task</ons-button>
+            </p>
+            <p>
+                <ons-button modifier="material" id="push-button5" onclick="hideDialog('taskDialog');">Close</ons-button>
+            </p>
+        </div>
+
+    </ons-dialog>
+  </body>
+</html>
