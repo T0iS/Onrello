@@ -135,4 +135,33 @@ function delItem(i, j) {
   showData();
 }
 
-function editDialog(i, j) {}
+function editDialog(i, j) {
+  document.getElementById('taskDialog').show();
+
+  var k = localStorage.key(i);
+
+  obj = JSON.parse(localStorage.getItem(k));
+
+  $('#taskName').val(obj.data[j].taskName);
+  $('#taskText').val(obj.data[j].text);
+  $('#taskDate').val(obj.data[j].due);
+  $('#notifON').prop('checked', obj.data[j].notifications);
+  $('#push-button4').html('Edit task');
+  $('#push-button4').attr('onclick', 'editTask(' + i + ',' + j + ')');
+}
+
+function editTask(i, j) {
+  var k = localStorage.key(i);
+
+  obj = JSON.parse(localStorage.getItem(k));
+
+  obj.data[j].taskName = $('#taskName').val();
+  obj.data[j].text = $('#taskText').val();
+  obj.data[j].due = $('#taskDate').val();
+  obj.data[j].notifications = document.getElementById('notifON').checked;
+
+  localStorage.setItem(localStorage.key(i), JSON.stringify(obj));
+  document.getElementById('taskDialog').hide();
+  showData();
+  ons.notification.toast('Task edited!', { timeout: 2000 });
+}
