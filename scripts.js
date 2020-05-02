@@ -40,10 +40,28 @@ function showData() {
     document.getElementById('contCol' + obj.num).appendChild(cName);
     document.getElementById('contCol' + obj.num).appendChild(newCol);
 
-    for (var j = 0; j < Object.keys(obj.data).length; j++) {
+    for (var element in obj.data) {
       var newTask = document.createElement('ons-list-item');
-      newTask.innerHTML = obj.data[j].taskName;
-      console.log(obj.data[j].taskName);
+      try {
+        newTask.innerHTML = obj.data[element].taskName;
+        console.log(obj.data[element].taskName);
+      } catch (err) {
+        console.log(err.message);
+        continue;
+      }
+      var test = document.createElement('div');
+      test.setAttribute('class', 'itemPic');
+      test.setAttribute('onclick', 'editDialog(' + i + ',' + element + ')');
+      test.innerHTML = '<img src="edit.png" style="width:30px;length:40px;">';
+
+      newTask.appendChild(test);
+
+      test = document.createElement('div');
+      test.setAttribute('class', 'itemPic');
+      test.setAttribute('onclick', 'delItem(' + i + ',' + element + ')');
+      test.innerHTML = '<img src="delete.png" style="width:20px;length:25px;">';
+      newTask.appendChild(test);
+
       document.getElementById('column' + obj.num).appendChild(newTask);
     }
   }
@@ -106,3 +124,15 @@ function addTaskDialog(idCol) {
   var btn = document.getElementById('push-button4');
   btn.setAttribute('onclick', 'addTask(' + idCol + ',' + num + ')');
 }
+
+function delItem(i, j) {
+  var k = localStorage.key(i);
+
+  obj = JSON.parse(localStorage.getItem(k));
+
+  delete obj.data[j];
+  localStorage.setItem(localStorage.key(i), JSON.stringify(obj));
+  showData();
+}
+
+function editDialog(i, j) {}
