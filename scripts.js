@@ -140,9 +140,15 @@ function delItem(i, j) {
   obj = JSON.parse(localStorage.getItem(k));
 
   delete obj.data[j];
-
-  for( var post in obj.data){
-
+  
+  var existingKeys = Object.keys(obj.data);
+  for(var x = 0; x<existingKeys.length;x++){
+    if (existingKeys[x] > j){
+      obj.data[j] = obj.data[existingKeys[x]];
+      j++;
+      delete obj.data[existingKeys[x]];
+      break;
+    }
   }
   localStorage.setItem(localStorage.key(i), JSON.stringify(obj));
   showData();
@@ -151,8 +157,20 @@ function delItem(i, j) {
 
 function delCol(k){
 
-  
+  //obj = JSON.parse(JSON.stringify(localStorage));
+
   localStorage.removeItem(k);
+ /* var existingKeys = Object.keys(obj.data);
+  idx = k.match(/\d+/);
+  for (var i = 0;i<existingKeys.length;i++){
+    if(existingKeys[x].match(/\d+/)>idx){
+      obj = JSON.parse(localStorage.getItem(existingKeys[x]));
+      localStorage.setItem(k, JSON.stringify(obj));
+      localStorage.removeItem(k);
+      idx++
+    }
+  }
+  */
   showData();
 }
 
