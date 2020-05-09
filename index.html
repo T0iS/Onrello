@@ -13,6 +13,7 @@
     <script src="scripts.js"></script>
     <script src="https://unpkg.com/onsenui/js/onsenui.min.js"></script>
     <script src="https://unpkg.com/jquery/dist/jquery.min.js"></script>
+    <script src="FileSaver.js"></script>
   </head>
 
   <body>
@@ -35,7 +36,7 @@
             placeholder="tableName"
             onchange="chng()"
           ></ons-input>
-          <div class="topBarItem">Export</div>
+          <div class="topBarItem" onclick="exportData()">Export</div>
           <div class="topBarItem">Settings</div>
         </div>
         <div id="colData"></div>

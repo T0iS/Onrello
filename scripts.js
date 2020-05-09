@@ -1,7 +1,7 @@
 var colNum = localStorage.length;
 
 function createColumnDialog() {
-  document.getElementById('colDialog').show();
+  document.getElementById("colDialog").show();
 }
 
 var hideDialog = function (id) {
@@ -10,38 +10,38 @@ var hideDialog = function (id) {
 
 function createColumn() {
   localStorage.setItem(
-    'column' + colNum,
-    JSON.stringify({ name: $('#colName').val(), num: colNum++, data: {} })
+    "column" + colNum,
+    JSON.stringify({ name: $("#colName").val(), num: colNum++, data: {} })
   );
 
   showData();
 }
 
 function showData() {
-  $('#colData').empty();
+  $("#colData").empty();
   for (var i = 0; i < localStorage.length; i++) {
-    var newCol = document.createElement('ons-list');
+    var newCol = document.createElement("ons-list");
     var k = localStorage.key(i);
 
     obj = JSON.parse(localStorage.getItem(k));
-    var cName = document.createElement('p');
-    newCol.setAttribute('id', 'column' + obj.num);
+    var cName = document.createElement("p");
+    newCol.setAttribute("id", "column" + obj.num);
     cName.innerHTML = obj.name;
 
     newCol.innerHTML =
       '<div class="addStuff" onclick="addTaskDialog(' +
       obj.num +
       ')">+ Add task...</div>';
-    var container = document.createElement('div');
-    container.setAttribute('class', 'column');
-    container.setAttribute('id', 'contCol' + obj.num);
+    var container = document.createElement("div");
+    container.setAttribute("class", "column");
+    container.setAttribute("id", "contCol" + obj.num);
 
-    document.getElementById('colData').appendChild(container);
-    document.getElementById('contCol' + obj.num).appendChild(cName);
-    document.getElementById('contCol' + obj.num).appendChild(newCol);
+    document.getElementById("colData").appendChild(container);
+    document.getElementById("contCol" + obj.num).appendChild(cName);
+    document.getElementById("contCol" + obj.num).appendChild(newCol);
 
     for (var element in obj.data) {
-      var newTask = document.createElement('ons-list-item');
+      var newTask = document.createElement("ons-list-item");
       try {
         newTask.innerHTML = obj.data[element].taskName;
         console.log(obj.data[element].taskName);
@@ -49,49 +49,50 @@ function showData() {
         console.log(err.message);
         continue;
       }
-      var test = document.createElement('div');
-      test.setAttribute('class', 'itemPic');
-      test.setAttribute('onclick', 'editDialog(' + i + ',' + element + ')');
+      var test = document.createElement("div");
+      test.setAttribute("class", "itemPic");
+      test.setAttribute("onclick", "editDialog(" + i + "," + element + ")");
       test.innerHTML = '<img src="edit.png" style="width:30px;length:40px;">';
 
       newTask.appendChild(test);
 
-      test = document.createElement('div');
-      test.setAttribute('class', 'itemPic');
-      test.setAttribute('onclick', 'delItem(' + i + ',' + element + ')');
+      test = document.createElement("div");
+      test.setAttribute("class", "itemPic");
+      test.setAttribute("onclick", "delItem(" + i + "," + element + ")");
       test.innerHTML = '<img src="delete.png" style="width:20px;length:25px;">';
       newTask.appendChild(test);
 
-      document.getElementById('column' + obj.num).appendChild(newTask);
+      document.getElementById("column" + obj.num).appendChild(newTask);
     }
   }
 }
 
 function removeAll() {
-  ons.notification.alert('Removed All Items');
-  $('#todoList').empty();
+  ons.notification.alert("Removed All Items");
+  $("#todoList").empty();
   localStorage.clear();
   colNum = localStorage.length;
   showData();
 }
 
-document.addEventListener('init', function (event) {
+document.addEventListener("init", function (event) {
   showData();
 });
 
 function addTask(idCol, num) {
-  var taskName = $('#taskName').val();
-  var dateD = $('#taskDate').val();
-  var textArea = $('#taskText').val();
-  var notif = document.getElementById('notifON').checked;
+  colID = "column" + idCol;
+  var taskName = $("#taskName").val();
+  var dateD = $("#taskDate").val();
+  var textArea = $("#taskText").val();
+  var notif = document.getElementById("notifON").checked;
 
-  existing = localStorage.getItem(localStorage.key(idCol));
+  existing = localStorage.getItem(colID);
 
   existing = JSON.parse(existing);
 
-  console.log(existing['data']);
+  console.log(existing["data"]);
   if (Object.keys(existing.data).length == 0) {
-    existing['data'] = {
+    existing["data"] = {
       [num]: {
         taskName: taskName,
         due: dateD,
@@ -109,20 +110,20 @@ function addTask(idCol, num) {
       },
     };
 
-    existing['data'] = Object.assign({}, existing['data'], newD);
+    existing["data"] = Object.assign({}, existing["data"], newD);
   }
 
   console.log(Object.keys(existing.data).length);
-  localStorage.setItem('column' + idCol, JSON.stringify(existing));
+  localStorage.setItem("column" + idCol, JSON.stringify(existing));
 
   showData();
 }
 
 function addTaskDialog(idCol) {
-  var num = $('#column' + idCol + ' > ons-list-item').length;
-  document.getElementById('taskDialog').show();
-  var btn = document.getElementById('push-button4');
-  btn.setAttribute('onclick', 'addTask(' + idCol + ',' + num + ')');
+  var num = $("#column" + idCol + " > ons-list-item").length;
+  document.getElementById("taskDialog").show();
+  var btn = document.getElementById("push-button4");
+  btn.setAttribute("onclick", "addTask(" + idCol + "," + num + ")");
 }
 
 function delItem(i, j) {
@@ -136,18 +137,18 @@ function delItem(i, j) {
 }
 
 function editDialog(i, j) {
-  document.getElementById('taskDialog').show();
+  document.getElementById("taskDialog").show();
 
   var k = localStorage.key(i);
 
   obj = JSON.parse(localStorage.getItem(k));
 
-  $('#taskName').val(obj.data[j].taskName);
-  $('#taskText').val(obj.data[j].text);
-  $('#taskDate').val(obj.data[j].due);
-  $('#notifON').prop('checked', obj.data[j].notifications);
-  $('#push-button4').html('Edit task');
-  $('#push-button4').attr('onclick', 'editTask(' + i + ',' + j + ')');
+  $("#taskName").val(obj.data[j].taskName);
+  $("#taskText").val(obj.data[j].text);
+  $("#taskDate").val(obj.data[j].due);
+  $("#notifON").prop("checked", obj.data[j].notifications);
+  $("#push-button4").html("Edit task");
+  $("#push-button4").attr("onclick", "editTask(" + i + "," + j + ")");
 }
 
 function editTask(i, j) {
@@ -155,13 +156,21 @@ function editTask(i, j) {
 
   obj = JSON.parse(localStorage.getItem(k));
 
-  obj.data[j].taskName = $('#taskName').val();
-  obj.data[j].text = $('#taskText').val();
-  obj.data[j].due = $('#taskDate').val();
-  obj.data[j].notifications = document.getElementById('notifON').checked;
+  obj.data[j].taskName = $("#taskName").val();
+  obj.data[j].text = $("#taskText").val();
+  obj.data[j].due = $("#taskDate").val();
+  obj.data[j].notifications = document.getElementById("notifON").checked;
 
   localStorage.setItem(localStorage.key(i), JSON.stringify(obj));
-  document.getElementById('taskDialog').hide();
+  document.getElementById("taskDialog").hide();
   showData();
-  ons.notification.toast('Task edited!', { timeout: 2000 });
+  ons.notification.toast("Task edited!", { timeout: 2000 });
+}
+
+function exportData() {
+  var file = new File([JSON.stringify(localStorage)], "datafile.txt", {
+    type: "text/plain;charset=utf-8",
+  });
+
+  saveAs(file);
 }
