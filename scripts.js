@@ -21,12 +21,20 @@ function showData() {
   $("#colData").empty();
   for (var i = 0; i < localStorage.length; i++) {
     var newCol = document.createElement("ons-list");
+    //colID = "column" + i;
     var k = localStorage.key(i);
-
-    obj = JSON.parse(localStorage.getItem(k));
+    temp = localStorage.getItem(k);
+    obj = JSON.parse(temp);
     var cName = document.createElement("p");
+    try{
     newCol.setAttribute("id", "column" + obj.num);
+    cName.setAttribute("onclick","delCol('column" + obj.num+"');");
     cName.innerHTML = obj.name;
+    }
+    catch(err){
+      console.log(err.message);
+      continue;
+    }
 
     newCol.innerHTML =
       '<div class="addStuff" onclick="addTaskDialog(' +
@@ -127,12 +135,24 @@ function addTaskDialog(idCol) {
 }
 
 function delItem(i, j) {
-  var k = localStorage.key(i);
+  var k =  localStorage.key(i);           
 
   obj = JSON.parse(localStorage.getItem(k));
 
   delete obj.data[j];
+
+  for( var post in obj.data){
+
+  }
   localStorage.setItem(localStorage.key(i), JSON.stringify(obj));
+  showData();
+}
+
+
+function delCol(k){
+
+  
+  localStorage.removeItem(k);
   showData();
 }
 
