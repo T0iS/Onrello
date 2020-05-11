@@ -1,5 +1,35 @@
 var colNum = localStorage.length;
 
+
+
+function timedFunction(){
+  var d = new Date();
+  console.log(d.toLocaleTimeString());
+  var today = new Date();
+  var dd = String(today.getDate()).padStart(2, '0');
+  var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+  var yyyy = today.getFullYear();
+
+  today = yyyy + '-' + mm + '-' + dd;
+  console.log(today);
+
+
+  var elements = document.getElementsByClassName("taskClass");
+
+  for (var i = 0; i<elements.length; i++){
+    var tName = elements[i].children[0].innerHTML.match("\"[A-Z]*[a-z]*[0-9]*<");
+    
+  }
+  
+}
+
+var intervalID = setInterval(timedFunction, 6000);
+
+
+
+
+
+
 function createColumnDialog() {
   document.getElementById("colDialog").show();
 }
@@ -27,9 +57,17 @@ function showData() {
     obj = JSON.parse(temp);
     var cName = document.createElement("p");
     try{
-    newCol.setAttribute("id", "column" + obj.num);
-    cName.setAttribute("onclick","delCol('column" + obj.num+"');");
-    cName.innerHTML = obj.name;
+      newCol.setAttribute("id", "column" + obj.num);
+      //cName.setAttribute("onclick","delCol('column" + obj.num+"');");
+      var id = "column"+obj.num;
+      cName.setAttribute("style", "display:flex; flex-drection:row;");
+      cName.innerHTML = obj.name; 
+      var test = document.createElement("div");
+      test.setAttribute("class", "itemPic");
+      test.setAttribute("onclick", "delCol('column" + obj.num+"');");
+      test.innerHTML = '<img src="img/delete.png" style="width:20px;length:25px; margin-left:7px;">';
+      cName.appendChild(test);
+      
     }
     catch(err){
       console.log(err.message);
@@ -52,22 +90,23 @@ function showData() {
       var newTask = document.createElement("ons-list-item");
       try {
         newTask.innerHTML = obj.data[element].taskName;
-        console.log(obj.data[element].taskName);
+        //console.log(obj.data[element].taskName);
       } catch (err) {
         console.log(err.message);
         continue;
       }
-      var test = document.createElement("div");
+      newTask.setAttribute("class", "taskClass");
+      test = document.createElement("div");
       test.setAttribute("class", "itemPic");
       test.setAttribute("onclick", "editDialog(" + i + "," + element + ")");
-      test.innerHTML = '<img src="edit.png" style="width:30px;length:40px;">';
+      test.innerHTML = '<img src="img/edit.png" style="width:30px;length:40px;">';
 
       newTask.appendChild(test);
 
       test = document.createElement("div");
       test.setAttribute("class", "itemPic");
       test.setAttribute("onclick", "delItem(" + i + "," + element + ")");
-      test.innerHTML = '<img src="delete.png" style="width:20px;length:25px;">';
+      test.innerHTML = '<img src="img/delete.png" style="width:20px;length:25px;">';
       newTask.appendChild(test);
 
       document.getElementById("column" + obj.num).appendChild(newTask);
@@ -131,6 +170,7 @@ function addTaskDialog(idCol) {
   var num = $("#column" + idCol + " > ons-list-item").length;
   document.getElementById("taskDialog").show();
   var btn = document.getElementById("push-button4");
+  btn.innerHTML = "Add task";
   btn.setAttribute("onclick", "addTask(" + idCol + "," + num + ")");
 }
 
@@ -206,9 +246,64 @@ function editTask(i, j) {
 }
 
 function exportData() {
-  var file = new File([JSON.stringify(localStorage)], "datafile.txt", {
+  var file = new File([JSON.stringify(localStorage)], "onrello-data.txt", {
     type: "text/plain;charset=utf-8",
   });
 
   saveAs(file);
+}
+
+function readText(param){
+
+  if(param.files && param.files[0]){
+    var reader = new FileReader();
+    reader.onload = function (e) {  
+      var output=e.target.result;
+
+      //document.getElementById('main').innerHTML= output;
+      localStorage.clear();
+      var data = JSON.parse(output);
+      var keys = Object.keys(data);
+
+      for(var x = 0; x<keys.length;x++){
+        data[keys[x]] = JSON.parse(data[keys[x]]);
+        
+        localStorage.setItem(keys[x], JSON.stringify(data[keys[x]]));
+
+      }        
+    };
+    reader.readAsText(param.files[0]);
+  }
+  location.reload();
+
+}
+
+
+
+document.addEventListener('init', function(event) {
+    
+    var range = $("#volRange");
+    //Occurs when the text content of an element is changed through the user interface
+    range.on('input', function() {  
+        var txt = $("#volValue");
+        txt.text(range.val()); 
+         
+    });
+    
+});
+
+
+function changeVol(val){
+
+  $("#volValue").text(val);
+}
+
+
+function changeColor(val){
+
+  var elements = document.getElementsByClassName("customButton");
+
+  for (var i = 0; i<elements.length; i++){
+    elements[i].style.backgroundColor = val;
+  }
 }

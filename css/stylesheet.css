@@ -1,0 +1,94 @@
+.tabLogo {
+  max-width: 90px;
+  height: 40px;
+  margin:0px 5px 0px 10px;
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.topBarItem {
+  margin: 10px;
+  text-align: center;
+  font-size: 50;
+  display: flex;
+  white-space: nowrap;
+  height: 20px;
+}
+
+.topBar {
+  height: 30px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+}
+
+.customButton{
+
+  margin: 10px;
+  font-size: 20px;
+  height: 37px;
+  font-weight: bold;
+  text-align: center;
+  text-shadow:
+    -1px -1px 0 rgb(160, 160, 160),
+    1px -1px 0 rgb(189, 189, 189),
+    -1px 1px 0 rgb(189, 189, 189),
+    1px 1px 0 rgb(189, 189, 189); 
+  color:rgb(255, 255, 255);
+  background-color: #31e89f;
+  
+
+}
+.customButton:hover{
+  color:black;
+  border: 2px solid black;
+  text-shadow: none;
+}
+
+
+input[type="file"] {
+    display: none;
+}
+
+
+.addStuff {
+  padding: 7px;
+  margin: 10px;
+  color: grey;
+  font-size: 20px;
+  height: 25px;
+  font-weight: bold;
+}
+.addStuff:hover {
+  background-color: rgb(83, 83, 83);
+  color:white;
+}
+
+#colData {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  margin-top:15px;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+}
+
+.itemPic {
+  color: red;
+  display: flex;
+}
+
+.list-item {
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: row;
+}
+
+.taskClass{
+
+  
+}

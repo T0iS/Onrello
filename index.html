@@ -9,85 +9,146 @@
       rel="stylesheet"
       href="https://unpkg.com/onsenui/css/onsen-css-components.min.css"
     />
-    <link rel="stylesheet" href="des.css" />
-    <script src="scripts.js"></script>
+    <link rel="stylesheet" href="css/stylesheet.css" />
+    <link rel="icon" href="img/logo.png" />
+    <script src="js/scripts.js"></script>
     <script src="https://unpkg.com/onsenui/js/onsenui.min.js"></script>
     <script src="https://unpkg.com/jquery/dist/jquery.min.js"></script>
-    <script src="FileSaver.js"></script>
+    <script src="js/FileSaver.js"></script>
   </head>
 
   <body>
-    <ons-navigator
-      swipeable="force"
-      id="myNav"
-      page="page1.html"
-    ></ons-navigator>
-    <template id="page1.html">
-      <ons-page id="page1">
-        <ons-toolbar>
-          <div class="center">Onrello</div>
-        </ons-toolbar>
+  
+  <ons-tabbar swipeable position="auto">
+    <ons-tab page="page1.html" label="Tasks" icon="md-home" active></ons-tab>
+    <ons-tab page="settings.html" label="Settings" icon="md-settings" ></ons-tab>
+  </ons-tabbar> 
 
-        <div class="topBar">
-          <ons-input
-            id="tabName"
-            class="topBarItem tabName"
-            type="text"
-            placeholder="tableName"
-            onchange="chng()"
-          ></ons-input>
-          <div class="topBarItem" onclick="exportData()">Export</div>
-          <div class="topBarItem">Settings</div>
+
+  <template id="page1.html">
+    <ons-page id="page1">
+      <ons-toolbar>
+        <div class="center">Onrello</div>
+      </ons-toolbar>
+
+      <div class="topBar">
+        <div class="tabLogo">
+          <img src="img/logo.png" width="50px" height="50px" style="margin-top:5px;" onclick="location.reload();"></img>
         </div>
-        <div id="colData"></div>
+        <ons-button class="topBarItem customButton" onclick="exportData()">Export</ons-button>
+        
+        <label>
+          <ons-button class="topBarItem customButton">
+            <input type="file" id="importFile" name="importFile" onchange="readText(this)" >
+            Import
+          </ons-button>
+        </label>
 
-        <div class="addStuff" onclick="createColumnDialog()">+ Add column</div>
-        <ons-button onclick="removeAll()">REMOVE</ons-button>
-      </ons-page>
-    </template>
+        <ons-button class="topBarItem customButton" onclick="createColumnDialog()">+ Add column</ons-button>
+        
+      </div>
+      <div id="colData"></div>
+      <!--<div id="main"></div>-->
 
-    <ons-dialog id="colDialog">
-      <ons-input id="colName" placeholder="Column name..."></ons-input>
-      <p>
-        <ons-button onclick="createColumn()">ADD</ons-button>
-
-        <ons-button onclick="hideDialog('colDialog')">Close</ons-button>
-      </p>
-    </ons-dialog>
-    <ons-dialog id="taskDialog"> 
-        <div style="text-align: center; padding: 10px; ">
-
-            <p>
-                <ons-input id="taskName" modifier="underbar" placeholder="Task Name..." float></ons-input>
-            </p>
-            <p>
-                <input style="font-size:200%" id="taskDate" type="date" modifier="underbar material"></input>
-            </p>
-            <p>
-                <textarea class="textarea" rows="3" placeholder="Notes" id="taskText"></textarea>
-            </p>
-            <p>
-              <ons-list>
-                    <ons-list-header> Notifications</ons-list-header>
-
-                        <div class="center">
-                            ON/OFF
-                        </div>
-                        <div class="right">
-                            <ons-switch checked id="notifON"></ons-switch>
-                        </div>
-                    </ons-list>
+    </ons-page>
+  </template>
 
 
-            </p>
-            <p>
-                <ons-button modifier="material" id="push-button4">Add Task</ons-button>
-            </p>
-            <p>
-                <ons-button modifier="material" id="push-button5" onclick="hideDialog('taskDialog');">Close</ons-button>
-            </p>
-        </div>
+  <template id="settings.html">
+   <ons-page id="settings">
+      <ons-toolbar>
+        <div class="center">Onrello - settings</div>
+      </ons-toolbar>
+      <div style="display:flex; flex-direction: column; align-items: center;">
+        <ons-list style="width:50%;" class="center">
+          
+          <ons-list-item tappable>
+            <div class="center" >
+            Notification volume      
+              <ons-range modifier="material" id="volRange" style="width: 100%;" value="50" min="0" max="100" step="5" onchange="changeVol(this.value)"></ons-range>   
+              
+              <div id="volValue">
+                  50
+              </div>         
+                  
+              </div>       
+          </ons-list-item>
+            <ons-list-header> Main color theme</ons-list-header>
+            <ons-list-item tappable style="background-color: #61d8eb;">
+            <label class="left">
+              <ons-radio modifier="material" name="color" input-id="color1" value="Darker blue" onchange="changeColor('#61d8eb')"></ons-radio>
+            </label>
+            <label for="color1" class="center" >
+              Darker blue
+            </label>
+          </ons-list-item>
+          <ons-list-item tappable style="background-color: #31e89f;">
+            <label class="left">
+              <ons-radio modifier="material" name="color" input-id="color2" value="Light green" onchange="changeColor('#31e89f')"></ons-radio>
+            </label>
+            <label for="color2" class="center" >
+              Light green
+            </label>
+          </ons-list-item>
+          <ons-list-item tappable style="background-color: #61ecec;">
+            <label class="left">
+              <ons-radio modifier="material" name="color" input-id="color3" value="Light blue" onchange="changeColor('#61ecec')"></ons-radio>
+            </label>
+            <label for="color3" class="center" >
+              Light blue
+            </label>
+          </ons-list-item>
+      </ons-list>
+      <ons-button class ="topBarItem customButton" onclick="removeAll()">Delete everything</ons-button>
+      </div>
+   </ons-page> 
+  </template>
 
-    </ons-dialog>
+
+
+
+  <ons-dialog id="colDialog">
+    <ons-input id="colName" placeholder="Column name..."></ons-input>
+    <p>
+      <ons-button onclick="createColumn()">ADD</ons-button>
+
+      <ons-button onclick="hideDialog('colDialog')">Close</ons-button>
+    </p>
+  </ons-dialog>
+  <ons-dialog id="taskDialog"> 
+      <div style="text-align: center; padding: 10px; ">
+
+          <p>
+              <ons-input id="taskName" modifier="underbar" placeholder="Task Name..." float></ons-input>
+          </p>
+          <p>
+              <input style="font-size:200%" id="taskDate" type="date" modifier="underbar material"></input>
+          </p>
+          <p>
+              <textarea class="textarea" rows="3" placeholder="Notes" id="taskText"></textarea>
+          </p>
+          <p>
+            <ons-list>
+                  <ons-list-header> Notifications</ons-list-header>
+
+                      <div class="center">
+                          ON/OFF
+                      </div>
+                      <div class="right">
+                          <ons-switch checked id="notifON"></ons-switch>
+                      </div>
+                  </ons-list>
+
+
+          </p>
+          <p>
+              <ons-button modifier="material" id="push-button4">Add Task</ons-button>
+          </p>
+          <p>
+              <ons-button modifier="material" id="push-button5" onclick="hideDialog('taskDialog');">Close</ons-button>
+          </p>
+      </div>
+
+  </ons-dialog>
   </body>
 </html>
