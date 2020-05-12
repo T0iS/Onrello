@@ -2,7 +2,7 @@ var colNum = localStorage.length;
 
 function timedFunction() {
   var d = new Date();
-  console.log(d.toLocaleTimeString());
+  //console.log(d.toLocaleTimeString());
   var today = new Date();
   var dd = String(today.getDate()).padStart(2, "0");
   var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
@@ -24,7 +24,7 @@ function timedFunction() {
   }
 }
 
-var intervalID = setInterval(timedFunction, 6000);
+var intervalID = setInterval(timedFunction, 7777);
 
 function getTaskNames(today) {
   var arrayYellow = [];
@@ -289,6 +289,7 @@ function exportData() {
   });
 
   saveAs(file);
+  ons.notification.toast("File saved!", { timeout: 2000 });
 }
 
 function readText(param) {
@@ -332,4 +333,5 @@ function changeColor(val) {
   for (var i = 0; i < elements.length; i++) {
     elements[i].style.backgroundColor = val;
   }
+  ons.notification.toast("Scheme color changed!", { timeout: 2000 });
 }
