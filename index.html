@@ -99,6 +99,20 @@
             </label>
           </ons-list-item>
       </ons-list>
+
+      <div style="background-color: #9e9e9e; color:black; text-align: center; margin-top:10px; width:50%;"> 
+        <p>Guide: Onrello is very straight forward. Create your tasks and let Onrello help you with their management. </p>
+        
+          <p>You can choose the color theme at the top of this page.
+          </p>
+        <p>Onrello automatically marks your tasks with various colors.</p>
+        <p>ALERT: ONLY IF YOU TURN ON NOTIFICATIONS FOR THE TASK </p>
+
+        <p style="margin-top:30px;">Yellow: The task is to be completed in less than 7 days. </p>
+        <p>Red: The task is to be completed in less than 3 days.</p>
+        <p style="margin-top:30px;">Onrello also comes with a built in import/export feature.</p>
+        <p>You can save and import all of your tasks to share them with your friends or coleagues.</p>
+      </div>
       <ons-button class ="topBarItem customButton" onclick="removeAll()">Delete everything</ons-button>
       </div>
    </ons-page> 
@@ -129,15 +143,22 @@
           </p>
           <p>
             <ons-list>
-                  <ons-list-header> Notifications</ons-list-header>
+              <ons-list-header> Attributes</ons-list-header>
 
-                      <div class="center">
-                          ON/OFF
-                      </div>
-                      <div class="right">
-                          <ons-switch checked id="notifON"></ons-switch>
-                      </div>
-                  </ons-list>
+                <div class="center">
+                  Enable notifications
+                </div>
+                <div class="right">
+                    <ons-switch checked id="notifON"></ons-switch>
+                </div>  
+                <div class="right" style="margin-top:10px;"> 
+                  <ons-checkbox id="doneCheck" input-id="done"></ons-checkbox>
+                <label for="done" class="center">
+                  Mark task as done
+                </label>
+
+                </div>
+            </ons-list>
 
 
           </p>

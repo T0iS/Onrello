@@ -16,19 +16,24 @@ function timedFunction() {
   for (var i = 0; i < elements.length; i++) {
     var tName = elements[i].children[0].innerText;
     if (nms[0].includes(tName)) {
-      elements[i].style.backgroundColor = "#f7ec97";
+      elements[i].style.backgroundColor = "#f9fb55";
     }
     if (nms[1].includes(tName)) {
       elements[i].style.backgroundColor = "#ff6666";
+    }
+    if (nms[2].includes(tName)) {
+      elements[i].style.backgroundColor = "#3df953";
     }
   }
 }
 
 var intervalID = setInterval(timedFunction, 7777);
 
+
 function getTaskNames(today) {
   var arrayYellow = [];
   var arrayRed = [];
+  var arrayGreen = [];
 
   storage = localStorage;
   fl_keys = Object.keys(storage);
@@ -48,10 +53,14 @@ function getTaskNames(today) {
       ) {
         arrayRed.push(obj.data[j].taskName);
       }
+      if (obj.data[j].notifications == true && obj.data[j].done == true){
+        arrayGreen.push(obj.data[j].taskName);
     }
   }
-  return [arrayYellow, arrayRed];
 }
+  return [arrayYellow, arrayRed, arrayGreen];
+}
+
 
 function calculateDateDiff(date1, date2) {
   var result = 0;
@@ -172,6 +181,7 @@ function addTask(idCol, num) {
   var dateD = $("#taskDate").val();
   var textArea = $("#taskText").val();
   var notif = document.getElementById("notifON").checked;
+  var done = document.getElementById("doneCheck").checked;
 
   existing = localStorage.getItem(colID);
 
@@ -185,6 +195,7 @@ function addTask(idCol, num) {
         due: dateD,
         text: textArea,
         notifications: notif,
+        done:done,
       },
     };
   } else {
@@ -194,6 +205,7 @@ function addTask(idCol, num) {
         due: dateD,
         text: textArea,
         notifications: notif,
+        done: done,
       },
     };
 
@@ -263,6 +275,7 @@ function editDialog(i, j) {
   $("#taskText").val(obj.data[j].text);
   $("#taskDate").val(obj.data[j].due);
   $("#notifON").prop("checked", obj.data[j].notifications);
+  $("#doneCheck").prop("checked", obj.data[j].done);
   $("#push-button4").html("Edit task");
   $("#push-button4").attr("onclick", "editTask(" + i + "," + j + ")");
 }
@@ -276,6 +289,7 @@ function editTask(i, j) {
   obj.data[j].text = $("#taskText").val();
   obj.data[j].due = $("#taskDate").val();
   obj.data[j].notifications = document.getElementById("notifON").checked;
+  obj.data[j].done = document.getElementById("doneCheck").checked;
 
   localStorage.setItem(localStorage.key(i), JSON.stringify(obj));
   document.getElementById("taskDialog").hide();
