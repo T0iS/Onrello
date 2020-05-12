@@ -1,7 +1,7 @@
 .tabLogo {
   max-width: 90px;
   height: 40px;
-  margin:0px 5px 0px 10px;
+  margin: 0px 5px 0px 10px;
   display: inline-block;
   white-space: nowrap;
 }
@@ -23,34 +23,26 @@
   justify-content: flex-start;
 }
 
-.customButton{
-
+.customButton {
   margin: 10px;
   font-size: 20px;
   height: 37px;
   font-weight: bold;
   text-align: center;
-  text-shadow:
-    -1px -1px 0 rgb(160, 160, 160),
-    1px -1px 0 rgb(189, 189, 189),
-    -1px 1px 0 rgb(189, 189, 189),
-    1px 1px 0 rgb(189, 189, 189); 
-  color:rgb(255, 255, 255);
+  text-shadow: -1px -1px 0 rgb(160, 160, 160), 1px -1px 0 rgb(189, 189, 189),
+    -1px 1px 0 rgb(189, 189, 189), 1px 1px 0 rgb(189, 189, 189);
+  color: rgb(255, 255, 255);
   background-color: #31e89f;
-  
-
 }
-.customButton:hover{
-  color:black;
+.customButton:hover {
+  color: black;
   border: 2px solid black;
   text-shadow: none;
 }
 
-
 input[type="file"] {
-    display: none;
+  display: none;
 }
-
 
 .addStuff {
   padding: 7px;
@@ -62,14 +54,14 @@ input[type="file"] {
 }
 .addStuff:hover {
   background-color: rgb(83, 83, 83);
-  color:white;
+  color: white;
 }
 
 #colData {
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
-  margin-top:15px;
+  margin-top: 15px;
 }
 
 .column {
@@ -88,7 +80,5 @@ input[type="file"] {
   flex-direction: row;
 }
 
-.taskClass{
-
-  
+.taskClass {
 }

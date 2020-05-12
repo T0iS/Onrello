@@ -1,34 +1,69 @@
 var colNum = localStorage.length;
 
-
-
-function timedFunction(){
+function timedFunction() {
   var d = new Date();
   console.log(d.toLocaleTimeString());
   var today = new Date();
-  var dd = String(today.getDate()).padStart(2, '0');
-  var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+  var dd = String(today.getDate()).padStart(2, "0");
+  var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
   var yyyy = today.getFullYear();
 
-  today = yyyy + '-' + mm + '-' + dd;
-  console.log(today);
-
+  today = yyyy + "-" + mm + "-" + dd;
 
   var elements = document.getElementsByClassName("taskClass");
 
-  for (var i = 0; i<elements.length; i++){
-    var tName = elements[i].children[0].innerHTML.match("\"[A-Z]*[a-z]*[0-9]*<");
-    
+  nms = getTaskNames(today);
+  for (var i = 0; i < elements.length; i++) {
+    var tName = elements[i].children[0].innerText;
+    if (nms[0].includes(tName)) {
+      elements[i].style.backgroundColor = "#f7ec97";
+    }
+    if (nms[1].includes(tName)) {
+      elements[i].style.backgroundColor = "#ff6666";
+    }
   }
-  
 }
 
 var intervalID = setInterval(timedFunction, 6000);
 
+function getTaskNames(today) {
+  var arrayYellow = [];
+  var arrayRed = [];
 
+  storage = localStorage;
+  fl_keys = Object.keys(storage);
+  for (var i = 0; i < fl_keys.length; i++) {
+    obj = JSON.parse(storage[fl_keys[i]]);
+    sl_keys = Object.keys(obj.data);
+    for (var j = 0; j < sl_keys.length; j++) {
+      if (
+        obj.data[j].notifications == true &&
+        calculateDateDiff(obj.data[j].due, today) < 7
+      ) {
+        arrayYellow.push(obj.data[j].taskName);
+      }
+      if (
+        obj.data[j].notifications == true &&
+        calculateDateDiff(obj.data[j].due, today) < 3
+      ) {
+        arrayRed.push(obj.data[j].taskName);
+      }
+    }
+  }
+  return [arrayYellow, arrayRed];
+}
 
+function calculateDateDiff(date1, date2) {
+  var result = 0;
+  var aDay = 86400000;
 
-
+  result = Math.floor(
+    (Date.parse(date1.replace(/-/g, "/")) -
+      Date.parse(date2.replace(/-/g, "/"))) /
+      aDay
+  );
+  return result;
+}
 
 function createColumnDialog() {
   document.getElementById("colDialog").show();
@@ -56,20 +91,22 @@ function showData() {
     temp = localStorage.getItem(k);
     obj = JSON.parse(temp);
     var cName = document.createElement("p");
-    try{
+    try {
       newCol.setAttribute("id", "column" + obj.num);
       //cName.setAttribute("onclick","delCol('column" + obj.num+"');");
-      var id = "column"+obj.num;
-      cName.setAttribute("style", "display:flex; flex-drection:row;");
-      cName.innerHTML = obj.name; 
+      var id = "column" + obj.num;
+      cName.setAttribute(
+        "style",
+        "display:flex; flex-drection:row; font-weight:bold; font-size:larger;"
+      );
+      cName.innerHTML = obj.name;
       var test = document.createElement("div");
       test.setAttribute("class", "itemPic");
-      test.setAttribute("onclick", "delCol('column" + obj.num+"');");
-      test.innerHTML = '<img src="img/delete.png" style="width:20px;length:25px; margin-left:7px;">';
+      test.setAttribute("onclick", "delCol('column" + obj.num + "');");
+      test.innerHTML =
+        '<img src="img/delete.png" style="width:20px;length:25px; margin-left:7px;">';
       cName.appendChild(test);
-      
-    }
-    catch(err){
+    } catch (err) {
       console.log(err.message);
       continue;
     }
@@ -99,14 +136,16 @@ function showData() {
       test = document.createElement("div");
       test.setAttribute("class", "itemPic");
       test.setAttribute("onclick", "editDialog(" + i + "," + element + ")");
-      test.innerHTML = '<img src="img/edit.png" style="width:30px;length:40px;">';
+      test.innerHTML =
+        '<img src="img/edit.png" style="width:30px;length:40px;">';
 
       newTask.appendChild(test);
 
       test = document.createElement("div");
       test.setAttribute("class", "itemPic");
       test.setAttribute("onclick", "delItem(" + i + "," + element + ")");
-      test.innerHTML = '<img src="img/delete.png" style="width:20px;length:25px;">';
+      test.innerHTML =
+        '<img src="img/delete.png" style="width:20px;length:25px;">';
       newTask.appendChild(test);
 
       document.getElementById("column" + obj.num).appendChild(newTask);
@@ -124,6 +163,7 @@ function removeAll() {
 
 document.addEventListener("init", function (event) {
   showData();
+  timedFunction();
 });
 
 function addTask(idCol, num) {
@@ -175,15 +215,15 @@ function addTaskDialog(idCol) {
 }
 
 function delItem(i, j) {
-  var k =  localStorage.key(i);           
+  var k = localStorage.key(i);
 
   obj = JSON.parse(localStorage.getItem(k));
 
   delete obj.data[j];
-  
+
   var existingKeys = Object.keys(obj.data);
-  for(var x = 0; x<existingKeys.length;x++){
-    if (existingKeys[x] > j){
+  for (var x = 0; x < existingKeys.length; x++) {
+    if (existingKeys[x] > j) {
       obj.data[j] = obj.data[existingKeys[x]];
       j++;
       delete obj.data[existingKeys[x]];
@@ -194,13 +234,11 @@ function delItem(i, j) {
   showData();
 }
 
-
-function delCol(k){
-
+function delCol(k) {
   //obj = JSON.parse(JSON.stringify(localStorage));
 
   localStorage.removeItem(k);
- /* var existingKeys = Object.keys(obj.data);
+  /* var existingKeys = Object.keys(obj.data);
   idx = k.match(/\d+/);
   for (var i = 0;i<existingKeys.length;i++){
     if(existingKeys[x].match(/\d+/)>idx){
@@ -253,57 +291,45 @@ function exportData() {
   saveAs(file);
 }
 
-function readText(param){
-
-  if(param.files && param.files[0]){
+function readText(param) {
+  if (param.files && param.files[0]) {
     var reader = new FileReader();
-    reader.onload = function (e) {  
-      var output=e.target.result;
+    reader.onload = function (e) {
+      var output = e.target.result;
 
       //document.getElementById('main').innerHTML= output;
       localStorage.clear();
       var data = JSON.parse(output);
       var keys = Object.keys(data);
 
-      for(var x = 0; x<keys.length;x++){
+      for (var x = 0; x < keys.length; x++) {
         data[keys[x]] = JSON.parse(data[keys[x]]);
-        
-        localStorage.setItem(keys[x], JSON.stringify(data[keys[x]]));
 
-      }        
+        localStorage.setItem(keys[x], JSON.stringify(data[keys[x]]));
+      }
     };
     reader.readAsText(param.files[0]);
   }
   location.reload();
-
 }
 
-
-
-document.addEventListener('init', function(event) {
-    
-    var range = $("#volRange");
-    //Occurs when the text content of an element is changed through the user interface
-    range.on('input', function() {  
-        var txt = $("#volValue");
-        txt.text(range.val()); 
-         
-    });
-    
+document.addEventListener("init", function (event) {
+  var range = $("#volRange");
+  //Occurs when the text content of an element is changed through the user interface
+  range.on("input", function () {
+    var txt = $("#volValue");
+    txt.text(range.val());
+  });
 });
 
-
-function changeVol(val){
-
+function changeVol(val) {
   $("#volValue").text(val);
 }
 
-
-function changeColor(val){
-
+function changeColor(val) {
   var elements = document.getElementsByClassName("customButton");
 
-  for (var i = 0; i<elements.length; i++){
+  for (var i = 0; i < elements.length; i++) {
     elements[i].style.backgroundColor = val;
   }
 }
