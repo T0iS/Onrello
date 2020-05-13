@@ -16,11 +16,13 @@
 }
 
 .topBar {
-  height: 30px;
+  height: auto;
+  min-height: 30px;
   display: flex;
   flex-direction: row;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   justify-content: flex-start;
+  margin-bottom: 15px;
 }
 
 .customButton {
@@ -61,7 +63,6 @@ input[type="file"] {
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
-  margin-top: 15px;
 }
 
 .column {
